@@ -1,0 +1,43 @@
+<h1>to-do list</h1>
+<table class="todo-list">
+	<tr>
+		<td class="col col1 spine"></td>
+		<td class="col col2 spine"></td>
+	</tr>
+	
+	<tr>
+		<td class="col col1"></td>
+		<td class="col col2 status">
+			{{todoList.itemsLeft}} items left
+			<a href="#edit">Edit</a>
+		</td>
+	</tr>
+	{{#todoList}}
+	<tr>
+		<td class="col col1">
+			<input id="chkbox-{{id}}" type="checkbox" {{#isCompleted}}checked{{/isCompleted}} />
+		</td>
+		<td class="col col2">
+			<label id="text-{{id}}" class="todo-text">{{text}}</label>
+		</td>
+	</tr>
+	{{/todoList}}
+	
+	<tr>
+		<td class="col col1">
+			<input type="checkbox" disabled />
+		</td>
+		<td class="col col2">
+			
+			<input id="addItemTextbox" type="text" placeholder="What needs to be done?" />
+		</td>
+	</tr>
+		
+	<tr>
+		<td colspan="2" class="footer">
+			<div id="filter-all" class="filter"><a href="#all">All</a></div>
+			<div id="filter-active" class="filter"><a href="#active">Active</a></div>
+			<div id="filter-completed" class="filter"><a href="#completed">Completed</a></div>
+		</td>
+	</tr>
+</table>
