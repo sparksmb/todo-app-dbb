@@ -9,9 +9,22 @@ app.view.todoListView = {
 					todoList: null
 				}
 			},
-			todoListView = Object.create(app.view.htmlView.create(xhr, viewData));
+			todoListView = Object.create(app.view.mustacheView.create(xhr, viewData));
 		
-		/************** SEND EVENTS ******************************/
+		function parseId(id) {
+			var tokens = id.split('-');
+			return parseInt(tokens[tokens.length - 1], 10);
+		}
+		
+		/************** BEHAVIORS ******************************/
+		
+		todoListView.sendCompleteItemEvent = function (e) {
+			todoListView.triggerEvent({
+				type: 'completeTodoListItem',
+				id: parseId(e.target.id),
+				isChecked: e.target.checked
+			});
+		};
 		
 		function sendAddItemEvent(text) {
 			$('#todo-app').trigger({
@@ -28,14 +41,6 @@ app.view.todoListView = {
 			});
 		}
 		
-		function sendCompleteItemEvent(id, isChecked) {
-			$('#todo-app').trigger({
-				type: 'completeTodoListItem',
-				id: id,
-				isChecked: isChecked
-			});
-		}
-		
 		function sendFilterStatusEvent(filterStatus) {
 			$('#todo-app').trigger({
 				type: 'filterTodoList',
@@ -44,11 +49,6 @@ app.view.todoListView = {
 		}
 		
 		/***************** UI STUFF ******************************/
-		
-		function parseId(id) {
-			var tokens = id.split('-');
-			return parseInt(tokens[tokens.length - 1], 10);
-		}
 		
 		function endEditItemMode(element, oldText) {
 			var newText = $('#editItemTextbox').val();
@@ -59,12 +59,6 @@ app.view.todoListView = {
 		
 		function startEditItemMode(element, text) {
 			element.innerHTML = '<input type="text" id="editItemTextbox" value="' + text + '" />';
-			
-			/*if (!element.onkeydown) {
-				element.onkeydown = function (e) {
-					detectEnterKeyPress(e, element);
-				};
-			}*/
 			
 			$('#editItemTextbox').blur(function (e) {
 				endEditItemMode(element, text);
@@ -82,14 +76,6 @@ app.view.todoListView = {
 		}
 		
 		/************** BINDING ******************************/
-		
-		function bindMarkCompletedAction() {
-			$("input[type='checkbox']").click(function (e) {
-				var id = parseId(e.target.id),
-					isChecked = e.target.checked;
-				sendCompleteItemEvent(id, isChecked);
-			});
-		}
 		
 		function bindAddItemAction() {
 			$('#addItemTextbox').bind('keydown', function (e) {
@@ -124,7 +110,6 @@ app.view.todoListView = {
 		
 		function init() {
 			bindAddItemAction();
-			bindMarkCompletedAction();
 			bindEditItemAction();
 			bindFilterActions();
 			$('#addItemTextbox').focus();
@@ -135,9 +120,9 @@ app.view.todoListView = {
 		};
 		
 		todoListView.render = function () {
-			Object.getPrototypeOf(todoListView).render(); //baseObj.render()
+			Object.getPrototypeOf(todoListView).render(todoListView);
 		};
-				
+						
 		return todoListView;
 	}
 };

@@ -15,7 +15,10 @@
 	{{#todoList}}
 	<tr>
 		<td class="col col1">
-			<input id="chkbox-{{id}}" type="checkbox" {{#isCompleted}}checked{{/isCompleted}} />
+			<input id="chkbox-{{id}}" 
+				   type="checkbox" 
+				   data-bind="click: sendCompleteItemEvent(#chkbox-{{id}})" 
+				   {{#isCompleted}}checked{{/isCompleted}} />
 		</td>
 		<td class="col col2">
 			<label id="text-{{id}}" class="todo-text">{{text}}</label>

@@ -20,7 +20,7 @@ app.usecase.viewTodoList = {
 		function bindModelData(todoList) {
 			var filteredList = filterTodoList.execute(filterStatus);
 			filteredList.itemsLeft = todoList.itemsLeft;
-			view.getViewData().data.todoList = filteredList;
+			view.getViewModel().data.todoList = filteredList;
 		}
 		
 		function render() {
