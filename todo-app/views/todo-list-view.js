@@ -9,7 +9,7 @@ app.view.todoListView = {
 					todoList: null
 				}
 			},
-			todoListView = Object.create(app.view.mustacheView.create(xhr, viewData));
+			todoListView = Object.create(app.view.mustacheDbbView.create(xhr, viewData));
 		
 		function parseId(id) {
 			var tokens = id.split('-');
