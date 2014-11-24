@@ -4,7 +4,7 @@
 Main's responsibility is to instantiate 
 dependencies (as seen by the variable list)
 and then set the application in motion by
-executing the viewTodoList usecase.  No
+executing the view controller.  No
 business rules or algorithms should be 
 visibile in main.  They should all be 
 encapsulated in their appropriate modules.
@@ -13,21 +13,25 @@ when the script tag is parsed.
 ******************************************/
 app.main.run = function () {
 	'use strict';
-	var viewTodoList,
-		xhr = app.entity.xhr.create(),
-		webStorageCreator = app.entity.webStorage,
-		storage = app.entity.todoListStorageAdapter.create(webStorageCreator),
-		todoListView = app.view.todoListView.create(xhr),
-		todoList = app.entity.todoList,
-		getTodoList = app.usecase.getTodoList.create(storage, todoList),
-		saveTodoList = app.usecase.saveTodoList.create(storage),
-		todoListItemCreator = app.entity.todoListItem,
-		addTodoListItemCreator = app.usecase.addTodoListItem,
-		completeTodoListItemCreator = app.usecase.completeTodoListItem,
-		editTodoListItemCreator = app.usecase.editTodoListItem,
-		filterTodoListCreator = app.usecase.filterTodoList;
+	var todoListViewController,
+		view = app.view,
+		usecase = app.usecase,
+		entity = app.entity,
+		xhr = entity.xhr.create(),
+		webStorageCreator = entity.webStorage,
+		storage = entity.todoListStorageAdapter.create(webStorageCreator),
+		todoListView = view.todoListView.create(xhr),
+		controllerBase = view.controllerBase.create(),
+		todoList = entity.todoList,
+		getTodoList = usecase.getTodoList.create(storage, todoList),
+		saveTodoList = usecase.saveTodoList.create(storage),
+		todoListItemCreator = entity.todoListItem,
+		addTodoListItemCreator = usecase.addTodoListItem,
+		completeTodoListItemCreator = usecase.completeTodoListItem,
+		editTodoListItemCreator = usecase.editTodoListItem,
+		filterTodoListCreator = usecase.filterTodoList;
 	
-	viewTodoList = app.usecase.viewTodoList.create(
+	todoListViewController = view.todoListViewController.create(
 		todoListView,
 		getTodoList,
 		saveTodoList,
@@ -35,8 +39,9 @@ app.main.run = function () {
 		addTodoListItemCreator,
 		completeTodoListItemCreator,
 		editTodoListItemCreator,
-		filterTodoListCreator
+		filterTodoListCreator,
+		controllerBase
 	);
 	
-	viewTodoList.execute();
+	todoListViewController.execute();
 };
