@@ -9,7 +9,7 @@
 		<td class="col col1"></td>
 		<td class="col col2 status">
 			{{todoList.itemsLeft}} items left
-			<a href="#edit">Edit</a>
+			<a href="#edit" data-bind="click: editTodoList">Edit</a>
 		</td>
 	</tr>
 	{{#todoList}}
@@ -17,7 +17,7 @@
 		<td class="col col1">
 			<input id="chkbox-{{id}}" 
 				   type="checkbox" 
-				   data-bind="click: sendCompleteItemEvent(#chkbox-{{id}})" 
+				   data-bind="click: sendCompleteItemEvent" 
 				   {{#isCompleted}}checked{{/isCompleted}} />
 		</td>
 		<td class="col col2">

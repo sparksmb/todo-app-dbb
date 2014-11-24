@@ -26,6 +26,10 @@ app.view.todoListView = {
 			});
 		};
 		
+		todoListView.editTodoList = function () {
+			alert('not implemented yet :(');
+		};
+		
 		function sendAddItemEvent(text) {
 			$('#todo-app').trigger({
 				type: 'addTodoListItem',
