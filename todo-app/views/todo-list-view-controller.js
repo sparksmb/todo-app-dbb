@@ -7,10 +7,9 @@ app.view.todoListViewController = {
 					   addTodoListItemCreator,
 					   completeTodoListItemCreator,
 					   editTodoListItemCreator,
-					   filterTodoListCreator,
-					   controller) {
+					   filterTodoListCreator) {
 		'use strict';
-		var todoListViewController = Object.create(controller),
+		var todoListViewController = Object.create(app.view.controllerBase.create()),
 			todoList,
 			addTodoListItem,
 			completeTodoListItem,
@@ -55,10 +54,12 @@ app.view.todoListViewController = {
 		}
 		
 		function initEventHandlers() {
-			todoListViewController.initEventHandler('addTodoListItem', addTodoListItemEventHandler);
-			todoListViewController.initEventHandler('editTodoListItem', editTodoListItemEventHandler);
-			todoListViewController.initEventHandler('completeTodoListItem', completeTodoListItemEventHandler);
-			todoListViewController.initEventHandler('filterTodoList', filterTodoListEventHandler);
+			todoListViewController.initEventHandlers([
+				{ eventName: 'addTodoListItem', eventHandler: addTodoListItemEventHandler },
+				{ eventName: 'editTodoListItem', eventHandler: editTodoListItemEventHandler },
+				{ eventName: 'completeTodoListItem', eventHandler: completeTodoListItemEventHandler },
+				{ eventName: 'filterTodoList', eventHandler: filterTodoListEventHandler }
+			]);
 		}
 		
 		function initDependencies(todoList) {
@@ -72,8 +73,8 @@ app.view.todoListViewController = {
 			todoList = getTodoList.execute();
 			filterStatus = filterStatus || todoList.ALL;
 			initDependencies(todoList);
-			render();
 			initEventHandlers();
+			render();
 		};
 		
 		return todoListViewController;

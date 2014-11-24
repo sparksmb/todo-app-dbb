@@ -21,7 +21,6 @@ app.main.run = function () {
 		webStorageCreator = entity.webStorage,
 		storage = entity.todoListStorageAdapter.create(webStorageCreator),
 		todoListView = view.todoListView.create(xhr),
-		controllerBase = view.controllerBase.create(),
 		todoList = entity.todoList,
 		getTodoList = usecase.getTodoList.create(storage, todoList),
 		saveTodoList = usecase.saveTodoList.create(storage),
@@ -39,8 +38,7 @@ app.main.run = function () {
 		addTodoListItemCreator,
 		completeTodoListItemCreator,
 		editTodoListItemCreator,
-		filterTodoListCreator,
-		controllerBase
+		filterTodoListCreator
 	);
 	
 	todoListViewController.execute();

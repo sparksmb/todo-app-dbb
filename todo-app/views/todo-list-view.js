@@ -1,15 +1,15 @@
 /*global app, $, document, alert, FileReader */
 app.view.todoListView = {
-	create: function (xhr, iViewData) {
+	create: function (xhr, viewData) {
 		'use strict';
-		var viewData = iViewData || {
+		var viewModel = viewData || {
 				container_id: 'todo-app',
 				template: { url: 'views/todo-list-view.html'},
 				data: {
 					todoList: null
 				}
 			},
-			todoListView = Object.create(app.view.mustacheDbbView.create(xhr, viewData));
+			todoListView = Object.create(app.view.mustacheDbbView.create(xhr, viewModel));
 		
 		function parseId(id) {
 			var tokens = id.split('-');
