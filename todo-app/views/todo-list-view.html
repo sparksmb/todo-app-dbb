@@ -32,15 +32,24 @@
 		</td>
 		<td class="col col2">
 			
-			<input id="addItemTextbox" type="text" placeholder="What needs to be done?" />
+			<input id="addItemTextbox" 
+				   type="text" 
+				   data-bind="keydown: detectEnterKeyPress"
+				   placeholder="What needs to be done?" />
 		</td>
 	</tr>
 		
 	<tr>
 		<td colspan="2" class="footer">
-			<div id="filter-all" class="filter"><a href="#all">All</a></div>
-			<div id="filter-active" class="filter"><a href="#active">Active</a></div>
-			<div id="filter-completed" class="filter"><a href="#completed">Completed</a></div>
+			<div id="filter-all" data-bind="click: sendFilterAllEvent" class="filter">
+				<a href="#all">All</a>
+			</div>
+			<div id="filter-active" data-bind="click: sendFilterActiveEvent" class="filter">
+				<a href="#active">Active</a>
+			</div>
+			<div id="filter-completed" data-bind="click: sendFilterCompletedEvent" class="filter">
+				<a href="#completed">Completed</a>
+			</div>
 		</td>
 	</tr>
 </table>

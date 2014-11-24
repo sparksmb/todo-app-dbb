@@ -16,6 +16,60 @@ app.view.todoListView = {
 			return parseInt(tokens[tokens.length - 1], 10);
 		}
 		
+		function sendAddItemEvent(text) {
+			todoListView.triggerEvent({
+				type: 'addTodoListItem',
+				text: text
+			});
+		}
+		
+		function sendEditItemEvent(oldText, newText) {
+			$('#todo-app').trigger({
+				type: 'editTodoListItem',
+				oldText: oldText,
+				newText: newText
+			});
+		}
+		
+		function endEditItemMode(element, oldText) {
+			var newText = $('#editItemTextbox').val();
+			element.innerHTML = newText;
+			sendEditItemEvent(oldText, newText);
+			$('#addItemTextbox').focus();
+		}
+		
+		function detectEnterKeyPress(e, element) {
+			if (e.keyCode === 13) {
+				if (e.target.id === 'addItemTextbox') {
+					alert('hey');
+					sendAddItemEvent(e.target.value);
+				} else {
+					endEditItemMode(element);
+				}
+			}
+		}
+		
+		function startEditItemMode(element, text) {
+			element.innerHTML = '<input id="editItemTextbox" type="text" value="' + text + '" />';
+			
+			$('#editItemTextbox').blur(function (e) {
+				endEditItemMode(element, text);
+			});
+			
+			$('#editItemTextbox').keydown(function (e) {
+				detectEnterKeyPress(e, element);
+			});
+		}
+		
+		function bindEditItemAction() {
+			$('.col2 .todo-text').click(function (e) {
+				var todoTextElement = e.target,
+					text = todoTextElement.textContent;
+				
+				startEditItemMode(todoTextElement, text);
+			});
+		}
+		
 		/************** BEHAVIORS ******************************/
 		
 		todoListView.sendCompleteItemEvent = function (e) {
@@ -30,92 +84,35 @@ app.view.todoListView = {
 			alert('not implemented yet :(');
 		};
 		
-		function sendAddItemEvent(text) {
-			$('#todo-app').trigger({
-				type: 'addTodoListItem',
-				text: text
-			});
-		}
-		
-		function sendEditItemEvent(oldText, newText) {
-			$('#todo-app').trigger({
-				type: 'editTodoListItem',
-				oldText: oldText,
-				newText: newText
-			});
-		}
-		
-		function sendFilterStatusEvent(filterStatus) {
-			$('#todo-app').trigger({
+		todoListView.sendFilterAllEvent = function (filterStatus) {
+			todoListView.triggerEvent({
 				type: 'filterTodoList',
-				filterStatus: filterStatus
+				filterStatus: 2
 			});
-		}
+		};
 		
-		/***************** UI STUFF ******************************/
-		
-		function endEditItemMode(element, oldText) {
-			var newText = $('#editItemTextbox').val();
-			element.innerHTML = newText;
-			sendEditItemEvent(oldText, newText);
-			$('#addItemTextbox').focus();
-		}
-		
-		function startEditItemMode(element, text) {
-			element.innerHTML = '<input type="text" id="editItemTextbox" value="' + text + '" />';
-			
-			$('#editItemTextbox').blur(function (e) {
-				endEditItemMode(element, text);
+		todoListView.sendFilterActiveEvent = function (filterStatus) {
+			todoListView.triggerEvent({
+				type: 'filterTodoList',
+				filterStatus: 1
 			});
-		}
+		};
 		
-		function detectEnterKeyPress(e, element) {
-			if (e.keyCode === 13) {
-				if (e.target.id === 'addItemTextbox') {
-					sendAddItemEvent(e.target.value);
-				} else {
-					endEditItemMode(element);
-				}
-			}
-		}
-		
-		/************** BINDING ******************************/
-		
-		function bindAddItemAction() {
-			$('#addItemTextbox').bind('keydown', function (e) {
-				detectEnterKeyPress(e);
+		todoListView.sendFilterCompletedEvent = function (filterStatus) {
+			todoListView.triggerEvent({
+				type: 'filterTodoList',
+				filterStatus: 3
 			});
-		}
+		};
 		
-		function bindEditItemAction() {
-			$('.col2 .todo-text').click(function (e) {
-				var todoTextElement = e.target,
-					text = todoTextElement.textContent;
-				
-				startEditItemMode(todoTextElement, text);
-			});
-		}
-		
-		function bindFilterActions() {
-			$('#filter-active').click(function (e) {
-				sendFilterStatusEvent(1);
-			});
-			
-			$('#filter-all').click(function (e) {
-				sendFilterStatusEvent(2);
-			});
-			
-			$('#filter-completed').click(function (e) {
-				sendFilterStatusEvent(3);
-			});
-		}
-		
+		todoListView.detectEnterKeyPress = function (e) {
+			detectEnterKeyPress(e);
+		};
+						
 		/*************** RENDER STUFF ******************/
 		
 		function init() {
-			bindAddItemAction();
 			bindEditItemAction();
-			bindFilterActions();
 			$('#addItemTextbox').focus();
 		}
 		
